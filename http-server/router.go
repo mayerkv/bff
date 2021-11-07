@@ -51,7 +51,7 @@ func CreateRouter(
 	{
 		catalogsGroup.POST("", catalogController.CreateCatalog)
 		catalogsGroup.POST("/:id/items", catalogController.AddCatalogItem)
-		catalogsGroup.GET("", catalogController.GetCatalogItems)
+		catalogsGroup.GET("/:id/items", catalogController.GetCatalogItems)
 	}
 
 	notificationsGroup := r.Group("/notifications")

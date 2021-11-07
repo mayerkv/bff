@@ -28,7 +28,7 @@ func main() {
 	}
 	defer candidatesConn.Close()
 
-	catalogsClient, catalogsConn, err := grpc_clients.CreateCatalogsClient("catalogs:9090")
+	catalogsClient, catalogsConn, err := grpc_clients.CreateCatalogsClient("localhost:9090")
 	if err != nil {
 		log.Fatal(err)
 	}

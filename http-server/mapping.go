@@ -1,10 +1,11 @@
 package http_server
 
 import (
-	grpc_service "github.com/mayerkv/go-candidates/grpc-service"
+	candidates "github.com/mayerkv/go-candidates/grpc-service"
+	catalogs "github.com/mayerkv/go-catalogs/grpc-service"
 )
 
-func mapCandidateToDto(candidate *grpc_service.Candidate) CandidateDto {
+func mapCandidateToDto(candidate *candidates.Candidate) CandidateDto {
 	return CandidateDto{
 		Id:       candidate.Id,
 		Name:     candidate.Name,
@@ -13,8 +14,8 @@ func mapCandidateToDto(candidate *grpc_service.Candidate) CandidateDto {
 	}
 }
 
-func mapContactsToDto(contacts []*grpc_service.Contact) []ContactDto {
-	var res []ContactDto
+func mapContactsToDto(contacts []*candidates.Contact) []ContactDto {
+	res := make([]ContactDto, 0)
 
 	for _, c := range contacts {
 		res = append(res, mapContactToDto(c))
@@ -23,15 +24,15 @@ func mapContactsToDto(contacts []*grpc_service.Contact) []ContactDto {
 	return res
 }
 
-func mapContactToDto(c *grpc_service.Contact) ContactDto {
+func mapContactToDto(c *candidates.Contact) ContactDto {
 	return ContactDto{
 		Type:  int(c.Type),
 		Value: c.Value,
 	}
 }
 
-func mapDtoToContacts(contacts []ContactDto) []*grpc_service.Contact {
-	var res []*grpc_service.Contact
+func mapDtoToContacts(contacts []ContactDto) []*candidates.Contact {
+	res := make([]*candidates.Contact, 0)
 
 	for _, c := range contacts {
 		res = append(res, mapContact(c))
@@ -40,22 +41,60 @@ func mapDtoToContacts(contacts []ContactDto) []*grpc_service.Contact {
 	return res
 }
 
-func mapContact(c ContactDto) *grpc_service.Contact {
-	return &grpc_service.Contact{
+func mapContact(c ContactDto) *candidates.Contact {
+	return &candidates.Contact{
 		Type:  intToContactType(c.Type),
 		Value: c.Value,
 	}
 }
 
-func intToContactType(i int) grpc_service.Contact_Type {
-	var t grpc_service.Contact_Type
+func intToContactType(i int) candidates.Contact_Type {
+	var t candidates.Contact_Type
 
 	switch i {
 	case 0:
-		t = grpc_service.Contact_PHONE
+		t = candidates.Contact_PHONE
 	case 1:
-		t = grpc_service.Contact_EMAIL
+		t = candidates.Contact_EMAIL
 	}
 
 	return t
+}
+
+func mapCatalogDto(dto CreateCatalogDto) *catalogs.Catalog {
+	return &catalogs.Catalog{
+		Id:    dto.Id,
+		Title: dto.Title,
+		Items: mapCatalogItemsDto(dto.Items),
+	}
+}
+
+func mapCatalogItemsDto(items []CatalogItemDto) []*catalogs.CatalogItem {
+	res := make([]*catalogs.CatalogItem, 0)
+
+	for _, i := range items {
+		res = append(res, mapCatalogItemDto(i))
+	}
+
+	return res
+}
+
+func mapCatalogItemDto(i CatalogItemDto) *catalogs.CatalogItem {
+	return &catalogs.CatalogItem{
+		Id:    i.Id,
+		Value: i.Value,
+	}
+}
+
+func mapCatalogItems(items []*catalogs.CatalogItem) []CatalogItemDto {
+	res := make([]CatalogItemDto, 0)
+
+	for _, i := range items {
+		res = append(res, CatalogItemDto{
+			Id:    i.Id,
+			Value: i.Value,
+		})
+	}
+
+	return res
 }

@@ -71,8 +71,8 @@ github.com/mattn/go-isatty v0.0.12/go.mod h1:cbi8OIDigv2wuxKPP5vlRcQ1OAZbq2CE4Ky
 github.com/mayerkv/go-auth v1.0.0/go.mod h1:koM61x9HE3lUxLY1FY27BBAgvZClo9n718YW8jchsf0=
 github.com/mayerkv/go-candidates v1.0.0 h1:mxt/ZWohaGopeuYCFbvbZrqA2S4Y77JRjk4pI8AnAT4=
 github.com/mayerkv/go-candidates v1.0.0/go.mod h1:BqsP2lSSXQDchRWfa7IKAJDB8V5lU+6zj3FhrgaOgJU=
-github.com/mayerkv/go-catalogs v1.0.0 h1:RRl4m42/AIdiww8o5neK7NBiT58T5qrqBacUCjIPi+c=
-github.com/mayerkv/go-catalogs v1.0.0/go.mod h1:l/MZ27/MIgvReKRpPz90w0ZqBwErIowdDWR0VxdPn9Y=
+github.com/mayerkv/go-catalogs v1.0.1 h1:Y89HJJWz3IwX4NRLpf0Q/d8DYFKvpwpgVg/oodiA2Zk=
+github.com/mayerkv/go-catalogs v1.0.1/go.mod h1:l/MZ27/MIgvReKRpPz90w0ZqBwErIowdDWR0VxdPn9Y=
 github.com/mayerkv/go-notifications v1.0.0 h1:QwbF68FyWAbYPzb/Jq7oU9m+p8BboRUWvUnjrOqLZ1k=
 github.com/mayerkv/go-notifications v1.0.0/go.mod h1:8enNdajePAsjOdITxgN/GA8jiKzECmRq7rZVdqO2ebo=
 github.com/mayerkv/go-recruitmens v1.0.1 h1:onT4YCtYIw5S2LDqUg6CjskFpZnrE2be+nhXlnHLySg=

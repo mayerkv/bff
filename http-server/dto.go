@@ -34,3 +34,24 @@ type SearchCandidatesDto struct {
 	OrderBy        int `json:"order_by,omitempty" form:"order_by" binding:"numeric"`
 	OrderDirection int `json:"order_direction,omitempty" form:"order_direction" binding:"numeric"`
 }
+
+type CreateCatalogDto struct {
+	Id    string           `json:"id,omitempty"`
+	Title string           `json:"title,omitempty" binding:"required"`
+	Items []CatalogItemDto `json:"items,omitempty"`
+}
+
+type CatalogItemDto struct {
+	Id    string `json:"id,omitempty"`
+	Value string `json:"value,omitempty" binding:"required"`
+}
+
+type AddCatalogItemDto struct {
+	CatalogId string `uri:"id" binding:"required"`
+	Id        string `json:"id"`
+	Value     string `json:"value" binding:"required"`
+}
+
+type GetCatalogItemsDto struct {
+	CatalogId string `uri:"id" binding:"required"`
+}
