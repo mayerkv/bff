@@ -5,7 +5,7 @@ metadata:
   labels:
     app: bff
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: bff
@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
         - name: bff
-          image: bff:latest
-          imagePullPolicy: IfNotPresent
+          image: kvmayer/go-bff:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           env:

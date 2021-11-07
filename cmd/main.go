@@ -1,59 +1,66 @@
 package main
 
 import (
-	"context"
 	"github.com/gin-gonic/gin"
-	"github.com/mayerkv/go-recruitmens/recruitment-service"
-	"google.golang.org/grpc"
+	grpc_clients "github.com/mayerkv/bff/grpc-clients"
+	http_server "github.com/mayerkv/bff/http-server"
 	"log"
 	"net/http"
-	"os"
 	"time"
 )
 
 func main() {
-	var opts []grpc.DialOption
-	opts = append(opts, grpc.WithInsecure())
-
-	recruitmentsAddr := os.Getenv("RECRUITMENTS_ADDRESS")
-	if recruitmentsAddr == "" {
-		recruitmentsAddr = "localhost:9090"
-	}
-
-	conn, err := grpc.Dial(recruitmentsAddr, opts...)
+	usersClient, usersConn, err := grpc_clients.CreateUsersClient("users:9090")
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer usersConn.Close()
 
-	defer conn.Close()
+	recruitmentsClient, recruitmentsConn, err := grpc_clients.CreateRecruitmentsClient("recruitments:9090")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer recruitmentsConn.Close()
 
-	client := recruitment_service.NewRecruitmentServiceClient(conn)
+	candidatesClient, candidatesConn, err := grpc_clients.CreateCandidatesClient("candidates:9090")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer candidatesConn.Close()
 
-	r := gin.Default()
-	r.POST("/vacancies", postVacancy(client))
+	catalogsClient, catalogsConn, err := grpc_clients.CreateCatalogsClient("catalogs:9090")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer catalogsConn.Close()
 
-	if err := r.Run(":8080"); err != nil {
+	notificationsClient, notificationsConn, err := grpc_clients.CreateNotificationsClient("notifications:9090")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer notificationsConn.Close()
+
+	vacancyController := http_server.NewVacancyController(recruitmentsClient)
+	recruitmentController := http_server.NewRecruitmentController(recruitmentsClient)
+	userController := http_server.NewUserController(usersClient)
+	candidateController := http_server.NewCandidateController(candidatesClient)
+	catalogController := http_server.NewCatalogController(catalogsClient)
+	notificationController := http_server.NewNotificationController(notificationsClient)
+
+	r := http_server.CreateRouter(vacancyController, recruitmentController, userController, candidateController, catalogController, notificationController)
+
+	if err := runHttpServer(r); err != nil {
 		log.Fatal(err)
 	}
 }
 
-func postVacancy(client recruitment_service.RecruitmentServiceClient) gin.HandlerFunc {
-	return func(ctx *gin.Context) {
-		req := &recruitment_service.PostVacancyRequest{Message: os.Getenv("HOSTNAME")}
-
-		c, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-		defer cancel()
-
-		res, err := client.PostVacancy(c, req)
-		if err != nil {
-			ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
-				"error": err.Error(),
-			})
-			return
-		}
-
-		ctx.JSON(http.StatusCreated, gin.H{
-			"message": res.Message,
-		})
+func runHttpServer(r *gin.Engine) error {
+	server := http.Server{
+		Addr:         ":8080",
+		Handler:      r,
+		ReadTimeout:  5 * time.Second,
+		WriteTimeout: 5 * time.Second,
 	}
+
+	return server.ListenAndServe()
 }
