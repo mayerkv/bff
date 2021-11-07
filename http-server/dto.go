@@ -55,3 +55,37 @@ type AddCatalogItemDto struct {
 type GetCatalogItemsDto struct {
 	CatalogId string `uri:"id" binding:"required"`
 }
+
+type CreateTemplateDto struct {
+	Name     string `json:"name,omitempty" binding:"required"`
+	Template string `json:"template,omitempty" binding:"required"`
+}
+
+type SearchTemplatesDto struct {
+	Name           string `form:"name"`
+	Page           int    `form:"page" binding:"numeric"`
+	Size           int    `form:"size" binding:"numeric"`
+	OrderBy        int    `form:"order_by" binding:"numeric"`
+	OrderDirection int    `form:"order_direction" binding:"numeric"`
+}
+
+type TemplateDto struct {
+	Id       string `json:"id,omitempty"`
+	Name     string `json:"name,omitempty"`
+	Template string `json:"template,omitempty"`
+}
+
+type SearchNotificationsDto struct {
+	Page           int `form:"page" binding:"numeric"`
+	Size           int `form:"size" binding:"numeric"`
+	OrderBy        int `form:"order_by" binding:"numeric"`
+	OrderDirection int `form:"order_direction" binding:"numeric"`
+}
+
+type NotificationDto struct {
+	Id        string `json:"id,omitempty"`
+	Addressee string `json:"addressee,omitempty"`
+	Message   string `json:"message,omitempty"`
+	Type      int    `json:"type,omitempty"`
+	CreatedAt string `json:"created_at,omitempty"`
+}

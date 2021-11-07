@@ -3,6 +3,7 @@ package http_server
 import (
 	candidates "github.com/mayerkv/go-candidates/grpc-service"
 	catalogs "github.com/mayerkv/go-catalogs/grpc-service"
+	notifications "github.com/mayerkv/go-notifications/grpc-service"
 )
 
 func mapCandidateToDto(candidate *candidates.Candidate) CandidateDto {
@@ -97,4 +98,58 @@ func mapCatalogItems(items []*catalogs.CatalogItem) []CatalogItemDto {
 	}
 
 	return res
+}
+
+func mapTemplates(list []*notifications.Template) []TemplateDto {
+	res := make([]TemplateDto, 0)
+
+	for _, i := range list {
+		res = append(res, TemplateDto{
+			Id:       i.Id,
+			Name:     i.Name,
+			Template: i.Template,
+		})
+	}
+
+	return res
+}
+
+func mapTemplatesOrderDirection(direction int) notifications.OrderDirection {
+	if direction == 1 {
+		return notifications.OrderDirection_DESC
+	}
+
+	return notifications.OrderDirection_ASC
+}
+
+func mapTemplatesOrderBy(by int) notifications.SearchTemplatesRequest_OrderBy {
+	return notifications.SearchTemplatesRequest_NAME
+}
+
+func mapNotificationDtoList(list []*notifications.Notification) []NotificationDto {
+	res := make([]NotificationDto, 0)
+
+	for _, i := range list {
+		res = append(res, NotificationDto{
+			Id:        i.Id,
+			Addressee: i.Addressee,
+			Message:   i.Message,
+			Type:      int(i.Type),
+			CreatedAt: i.CreatedAt,
+		})
+	}
+
+	return res
+}
+
+func mapNotificationsOrderDirection(direction int) notifications.OrderDirection {
+	if direction == 1 {
+		return notifications.OrderDirection_DESC
+	}
+
+	return notifications.OrderDirection_ASC
+}
+
+func mapNotificationsOrderBy(by int) notifications.SearchNotificationsRequest_OrderBy {
+	return notifications.SearchNotificationsRequest_CREATED_AT
 }
