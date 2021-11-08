@@ -4,6 +4,7 @@ import (
 	candidates "github.com/mayerkv/go-candidates/grpc-service"
 	catalogs "github.com/mayerkv/go-catalogs/grpc-service"
 	notifications "github.com/mayerkv/go-notifications/grpc-service"
+	recruitments "github.com/mayerkv/go-recruitmens/grpc-service"
 )
 
 func mapCandidateToDto(candidate *candidates.Candidate) CandidateDto {
@@ -152,4 +153,118 @@ func mapNotificationsOrderDirection(direction int) notifications.OrderDirection 
 
 func mapNotificationsOrderBy(by int) notifications.SearchNotificationsRequest_OrderBy {
 	return notifications.SearchNotificationsRequest_CREATED_AT
+}
+
+func mapSettings(settings []SettingDto) []*recruitments.StageLineSettings {
+	res := make([]*recruitments.StageLineSettings, 0, len(settings))
+
+	for _, i := range settings {
+		res = append(res, &recruitments.StageLineSettings{
+			StageId:              i.StageId,
+			DeadlineDurationSec:  int32(i.DeadlineDuration),
+			ThresholdDurationSec: int32(i.ThresholdDuration),
+		})
+	}
+
+	return res
+}
+
+func mapReason(reason ReasonDto) *recruitments.RefuseReason {
+	return &recruitments.RefuseReason{
+		ReasonId: reason.ReasonId,
+		Comment:  reason.Comment,
+	}
+}
+
+func mapRecruitment(recruitment *recruitments.Recruitment) RecruitmentDto {
+	return RecruitmentDto{
+		Id:            recruitment.Id,
+		CandidateId:   recruitment.CandidateId,
+		ResponsibleId: recruitment.ResponsibleId,
+		CreatedAt:     recruitment.CreatedAt,
+		StageLine:     mapStageLineDto(recruitment.StageLine),
+		Vacancy:       mapVacancyDto(recruitment.Vacancy),
+		RefuseReason:  mapRefuseReasonDto(recruitment.RefuseReason),
+	}
+}
+
+func mapStageLineDto(line *recruitments.StageLine) StageLineDto {
+	return StageLineDto{
+		StageId:  line.StageId,
+		Settings: mapSettingsDto(line.Settings),
+		History:  mapHistoryDto(line.History),
+	}
+}
+
+func mapHistoryDto(history map[string]*recruitments.StageLineItem) map[string]StageLineItemDto {
+	var res map[string]StageLineItemDto
+
+	for id, item := range history {
+		res[id] = mapStageLineItemDto(item)
+	}
+
+	return res
+}
+
+func mapStageLineItemDto(item *recruitments.StageLineItem) StageLineItemDto {
+	return StageLineItemDto{
+		StageId:       item.StageId,
+		StartDate:     item.StartDate,
+		FinishDate:    item.FinishDate,
+		DeadlineDate:  item.DeadlineDate,
+		ThresholdDate: item.ThresholdDate,
+	}
+}
+
+func mapSettingsDto(settings []*recruitments.StageLineSettings) []SettingDto {
+	res := make([]SettingDto, 0, len(settings))
+
+	for _, s := range settings {
+		res = append(res, SettingDto{
+			StageId:           s.StageId,
+			DeadlineDuration:  int(s.DeadlineDurationSec),
+			ThresholdDuration: int(s.ThresholdDurationSec),
+		})
+	}
+
+	return res
+}
+
+func mapVacancyDto(vacancy *recruitments.Vacancy) VacancyDto {
+	return VacancyDto{
+		Id:         vacancy.Id,
+		PositionId: vacancy.PositionId,
+		CustomerId: vacancy.CustomerId,
+		CreatedAt:  vacancy.CreatedAt,
+		Status:     int(vacancy.Status),
+	}
+}
+
+func mapRefuseReasonDto(reason *recruitments.RefuseReason) RefuseReasonDto {
+	return RefuseReasonDto{
+		ReasonId: reason.ReasonId,
+		Comment:  reason.Comment,
+	}
+}
+
+func mapRecruitments(list []*recruitments.Recruitment) []RecruitmentDto {
+	res := make([]RecruitmentDto, 0, len(list))
+
+	for _, i := range list {
+		res = append(res, mapRecruitment(i))
+	}
+
+	return res
+}
+
+func mapRecruitmentOrderDirection(direction int) recruitments.OrderDirection {
+	if direction == 1 {
+		return recruitments.OrderDirection_DESC
+	}
+
+	return recruitments.OrderDirection_ASC
+}
+
+func mapRecruitmentOrderBy(by int) recruitments.Recruitment_Order {
+	return recruitments.Recruitment_CREATED_AT
 }
