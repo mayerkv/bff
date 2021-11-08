@@ -268,3 +268,25 @@ func mapRecruitmentOrderDirection(direction int) recruitments.OrderDirection {
 func mapRecruitmentOrderBy(by int) recruitments.Recruitment_Order {
 	return recruitments.Recruitment_CREATED_AT
 }
+
+func mapVacancyDtoList(list []*recruitments.Vacancy) []VacancyDto {
+	res := make([]VacancyDto, 0, len(list))
+
+	for _, i := range list {
+		res = append(res, mapVacancyDto(i))
+	}
+
+	return res
+}
+
+func mapVacancyOrderDirection(direction int) recruitments.OrderDirection {
+	if direction == 1 {
+		return recruitments.OrderDirection_DESC
+	}
+
+	return recruitments.OrderDirection_ASC
+}
+
+func mapVacancyOrder(by int) recruitments.Vacancy_Order {
+	return recruitments.Vacancy_CREATED_AT
+}

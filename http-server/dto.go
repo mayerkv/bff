@@ -166,9 +166,54 @@ type RefuseReasonDto struct {
 }
 
 type ShowRecruitmentsDto struct {
-	ResponsibleId  string `json:"responsibleId,omitempty"`
-	Page           int    `json:"page,omitempty"`
-	Size           int    `json:"size,omitempty"`
-	OrderBy        int    `json:"orderBy,omitempty"`
-	OrderDirection int    `json:"orderDirection,omitempty"`
+	ResponsibleId  string `form:"responsibleId,omitempty" binding:"required"`
+	Page           int    `form:"page,omitempty" binding:"numeric"`
+	Size           int    `form:"size,omitempty" binding:"numeric"`
+	OrderBy        int    `form:"orderBy,omitempty" binding:"numeric"`
+	OrderDirection int    `form:"orderDirection,omitempty" binding:"numeric"`
+}
+
+type PostVacancyDto struct {
+	PositionId string `json:"position_id,omitempty" binding:"required"`
+	CustomerId string `json:"customer_id,omitempty" binding:"required"`
+}
+
+type ShowVacanciesDto struct {
+	CustomerId     string `form:"customerId" binding:"required"`
+	Page           int    `form:"page" binding:"numeric"`
+	Size           int    `form:"size" binding:"numeric"`
+	OrderBy        int    `form:"orderBy" binding:"numeric"`
+	OrderDirection int    `form:"orderDirection" binding:"numeric"`
+}
+
+type SearchVacanciesDto struct {
+	Page           int `form:"page" binding:"numeric"`
+	Size           int `form:"size" binding:"numeric"`
+	OrderBy        int `form:"orderBy" binding:"numeric"`
+	OrderDirection int `form:"orderDirection" binding:"numeric"`
+}
+
+type ChangeVacancyPositionDto struct {
+	VacancyId  string `uri:"id" binding:"required"`
+	PositionId string `json:"positionId" binding:"required"`
+}
+
+type ApproveVacancyDto struct {
+	VacancyId string `uri:"id" binding:"required"`
+}
+
+type CloseVacancyDto struct {
+	VacancyId string `uri:"id" binding:"required"`
+}
+
+type RejectVacancyDto struct {
+	VacancyId string `uri:"id" binding:"required"`
+}
+
+type TakeInWorkVacancyDto struct {
+	VacancyId string `uri:"id" binding:"required"`
+}
+
+type GetVacancyDto struct {
+	VacancyId string `uri:"id" binding:"required"`
 }

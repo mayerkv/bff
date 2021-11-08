@@ -23,7 +23,6 @@ func (c *CatalogController) CreateCatalog(ctx *gin.Context) {
 		return
 	}
 
-
 	reqCtx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
@@ -76,7 +75,7 @@ func (c *CatalogController) GetCatalogItems(ctx *gin.Context) {
 		return
 	}
 
-	reqCtx, cancel := context.WithTimeout(context.Background(), 3 * time.Second)
+	reqCtx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
 	req := &grpc_service.GetCatalogItemsRequest{
@@ -91,4 +90,3 @@ func (c *CatalogController) GetCatalogItems(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, mapCatalogItems(response.Items))
 }
-

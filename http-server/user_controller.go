@@ -29,7 +29,7 @@ func (c *UserController) CreateUser(ctx *gin.Context) {
 		Role:     intToUserRole(dto.Role),
 	}
 
-	reqCtx, cancel := context.WithTimeout(context.Background(), 3 * time.Second)
+	reqCtx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
 	_, err := c.client.CreateUser(reqCtx, req)
