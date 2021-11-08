@@ -39,7 +39,7 @@ func (c *RecruitmentController) ConsiderCandidate(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusCreated, gin.H{
-		"recruitmentId": response.RecruitmentId,
+		"id": response.RecruitmentId,
 	})
 }
 

@@ -1,15 +1,15 @@
 package http_server
 
 type CreateUserDto struct {
-	Email    string `json:"email,omitempty" binding:"required,email"`
-	Password string `json:"password,omitempty" binding:"required"`
-	Role     int    `json:"role,omitempty" binding:"numeric"`
+	Email    string `json:"email" binding:"required,email"`
+	Password string `json:"password" binding:"required"`
+	Role     int    `json:"role" binding:"numeric"`
 }
 
 type CreateCandidateDto struct {
-	Name     string       `json:"name,omitempty" binding:"required"`
-	Surname  string       `json:"surname,omitempty" binding:"required"`
-	Contacts []ContactDto `json:"contacts,omitempty" binding:"required"`
+	Name     string       `json:"name" binding:"required"`
+	Surname  string       `json:"surname" binding:"required"`
+	Contacts []ContactDto `json:"contacts" binding:"required"`
 }
 
 type ContactDto struct {
@@ -29,21 +29,21 @@ type CandidateDto struct {
 }
 
 type SearchCandidatesDto struct {
-	Page           int `json:"page,omitempty" form:"page" binding:"numeric"`
-	Size           int `json:"size,omitempty" form:"size" binding:"numeric"`
-	OrderBy        int `json:"orderBy,omitempty" form:"orderBy" binding:"numeric"`
-	OrderDirection int `json:"orderDirection,omitempty" form:"orderDirection" binding:"numeric"`
+	Page           int `json:"page" form:"page" binding:"numeric"`
+	Size           int `json:"size" form:"size" binding:"numeric"`
+	OrderBy        int `json:"orderBy" form:"orderBy" binding:"numeric"`
+	OrderDirection int `json:"orderDirection" form:"orderDirection" binding:"numeric"`
 }
 
 type CreateCatalogDto struct {
-	Id    string           `json:"id,omitempty"`
-	Title string           `json:"title,omitempty" binding:"required"`
-	Items []CatalogItemDto `json:"items,omitempty"`
+	Id    string           `json:"id"`
+	Title string           `json:"title" binding:"required"`
+	Items []CatalogItemDto `json:"items"`
 }
 
 type CatalogItemDto struct {
-	Id    string `json:"id,omitempty"`
-	Value string `json:"value,omitempty" binding:"required"`
+	Id    string `json:"id"`
+	Value string `json:"value" binding:"required"`
 }
 
 type AddCatalogItemDto struct {
@@ -57,8 +57,8 @@ type GetCatalogItemsDto struct {
 }
 
 type CreateTemplateDto struct {
-	Name     string `json:"name,omitempty" binding:"required"`
-	Template string `json:"template,omitempty" binding:"required"`
+	Name     string `json:"name" binding:"required"`
+	Template string `json:"template" binding:"required"`
 }
 
 type SearchTemplatesDto struct {
@@ -70,9 +70,9 @@ type SearchTemplatesDto struct {
 }
 
 type TemplateDto struct {
-	Id       string `json:"id,omitempty"`
-	Name     string `json:"name,omitempty"`
-	Template string `json:"template,omitempty"`
+	Id       string `json:"id"`
+	Name     string `json:"name"`
+	Template string `json:"template"`
 }
 
 type SearchNotificationsDto struct {
@@ -83,30 +83,30 @@ type SearchNotificationsDto struct {
 }
 
 type NotificationDto struct {
-	Id        string `json:"id,omitempty"`
-	Addressee string `json:"addressee,omitempty"`
-	Message   string `json:"message,omitempty"`
-	Type      int    `json:"type,omitempty"`
-	CreatedAt string `json:"createdAt,omitempty"`
+	Id        string `json:"id"`
+	Addressee string `json:"addressee"`
+	Message   string `json:"message"`
+	Type      int    `json:"type"`
+	CreatedAt string `json:"createdAt"`
 }
 
 type ConsiderCandidateDto struct {
-	VacancyId     string       `json:"vacancyId,omitempty" binding:"required"`
-	CandidateId   string       `json:"candidateId,omitempty" binding:"required"`
-	ResponsibleId string       `json:"responsibleId,omitempty" binding:"required"`
-	Settings      []SettingDto `json:"settings,omitempty" binding:"required"`
+	VacancyId     string       `json:"vacancyId" binding:"required"`
+	CandidateId   string       `json:"candidateId" binding:"required"`
+	ResponsibleId string       `json:"responsibleId" binding:"required"`
+	Settings      []SettingDto `json:"settings" binding:"required"`
 }
 
 type SettingDto struct {
-	StageId           string `json:"stageId,omitempty" binding:"required"`
-	DeadlineDuration  int    `json:"deadlineDuration,omitempty" binding:"numeric"`
-	ThresholdDuration int    `json:"thresholdDuration,omitempty" binding:"numeric"`
+	StageId           string `json:"stageId" binding:"required"`
+	DeadlineDuration  int    `json:"deadlineDuration" binding:"numeric"`
+	ThresholdDuration int    `json:"thresholdDuration" binding:"numeric"`
 }
 
 type ConsiderCandidateAnotherVacancyDto struct {
 	VacancyId     string       `uri:"id" binding:"required"`
-	RecruitmentId string       `json:"recruitmentId,omitempty" binding:"required"`
-	Settings      []SettingDto `json:"settings,omitempty" binding:"required"`
+	RecruitmentId string       `json:"recruitmentId" binding:"required"`
+	Settings      []SettingDto `json:"settings" binding:"required"`
 }
 
 type AcceptRecruitmentStageDto struct {
@@ -120,8 +120,8 @@ type DenyRecruitmentDto struct {
 }
 
 type ReasonDto struct {
-	ReasonId string `json:"reasonId,omitempty" binding:"required"`
-	Comment  string `json:"comment,omitempty" binding:"required"`
+	ReasonId string `json:"reasonId" binding:"required"`
+	Comment  string `json:"comment" binding:"required"`
 }
 
 type GetRecruitmentDto struct {
@@ -129,53 +129,53 @@ type GetRecruitmentDto struct {
 }
 
 type RecruitmentDto struct {
-	Id            string          `json:"id,omitempty"`
-	CandidateId   string          `json:"candidateId,omitempty"`
-	ResponsibleId string          `json:"responsibleId,omitempty"`
-	CreatedAt     string          `json:"createdAt,omitempty"`
-	StageLine     StageLineDto    `json:"stageLine,omitempty"`
-	Vacancy       VacancyDto      `json:"vacancy,omitempty"`
+	Id            string          `json:"id"`
+	CandidateId   string          `json:"candidateId"`
+	ResponsibleId string          `json:"responsibleId"`
+	CreatedAt     string          `json:"createdAt"`
+	StageLine     StageLineDto    `json:"stageLine"`
+	Vacancy       VacancyDto      `json:"vacancy"`
 	RefuseReason  RefuseReasonDto `json:"refuseReason"`
 }
 
 type StageLineDto struct {
-	StageId  string                      `json:"stageId,omitempty"`
-	Settings []SettingDto                `json:"settings,omitempty"`
-	History  map[string]StageLineItemDto `json:"history,omitempty"`
+	StageId  string                      `json:"stageId"`
+	Settings []SettingDto                `json:"settings"`
+	History  map[string]StageLineItemDto `json:"history"`
 }
 
 type StageLineItemDto struct {
-	StageId       string `json:"stageId,omitempty"`
-	StartDate     string `json:"startDate,omitempty"`
-	FinishDate    string `json:"finishDate,omitempty"`
-	DeadlineDate  string `json:"deadlineDate,omitempty"`
-	ThresholdDate string `json:"thresholdDate,omitempty"`
+	StageId       string `json:"stageId"`
+	StartDate     string `json:"startDate"`
+	FinishDate    string `json:"finishDate"`
+	DeadlineDate  string `json:"deadlineDate"`
+	ThresholdDate string `json:"thresholdDate"`
 }
 
 type VacancyDto struct {
-	Id         string `json:"id,omitempty"`
-	PositionId string `json:"positionId,omitempty"`
-	CustomerId string `json:"customerId,omitempty"`
-	CreatedAt  string `json:"createdAt,omitempty"`
-	Status     int    `json:"status,omitempty"`
+	Id         string `json:"id"`
+	PositionId string `json:"positionId"`
+	CustomerId string `json:"customerId"`
+	CreatedAt  string `json:"createdAt"`
+	Status     int    `json:"status"`
 }
 
 type RefuseReasonDto struct {
-	ReasonId string `json:"reasonId,omitempty"`
-	Comment  string `json:"comment,omitempty"`
+	ReasonId string `json:"reasonId"`
+	Comment  string `json:"comment"`
 }
 
 type ShowRecruitmentsDto struct {
-	ResponsibleId  string `form:"responsibleId,omitempty" binding:"required"`
-	Page           int    `form:"page,omitempty" binding:"numeric"`
-	Size           int    `form:"size,omitempty" binding:"numeric"`
-	OrderBy        int    `form:"orderBy,omitempty" binding:"numeric"`
-	OrderDirection int    `form:"orderDirection,omitempty" binding:"numeric"`
+	ResponsibleId  string `form:"responsibleId" binding:"required"`
+	Page           int    `form:"page" binding:"numeric"`
+	Size           int    `form:"size" binding:"numeric"`
+	OrderBy        int    `form:"orderBy" binding:"numeric"`
+	OrderDirection int    `form:"orderDirection" binding:"numeric"`
 }
 
 type PostVacancyDto struct {
-	PositionId string `json:"position_id,omitempty" binding:"required"`
-	CustomerId string `json:"customer_id,omitempty" binding:"required"`
+	PositionId string `json:"positionId" binding:"required"`
+	CustomerId string `json:"customerId" binding:"required"`
 }
 
 type ShowVacanciesDto struct {

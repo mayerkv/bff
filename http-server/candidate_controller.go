@@ -90,27 +90,3 @@ func (c *CandidateController) SearchCandidates(ctx *gin.Context) {
 		"count": response.Count,
 	})
 }
-
-func mapCandidatesToDto(list []*grpc_service.Candidate) []CandidateDto {
-	var res []CandidateDto
-
-	for _, i := range list {
-		res = append(res, mapCandidateToDto(i))
-	}
-
-	return res
-}
-
-func mapOrderDirection(direction int) grpc_service.OrderDirection {
-	if direction == 1 {
-		return grpc_service.OrderDirection_DESC
-	}
-
-	return grpc_service.OrderDirection_ASC
-}
-
-func mapCandidateOrder(by int) grpc_service.Candidate_Order {
-	res := grpc_service.Candidate_FULL_NAME
-
-	return res
-}

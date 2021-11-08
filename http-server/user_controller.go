@@ -40,14 +40,3 @@ func (c *UserController) CreateUser(ctx *gin.Context) {
 
 	ctx.Status(http.StatusCreated)
 }
-
-func intToUserRole(i int) grpc_service.UserRole {
-	var res grpc_service.UserRole
-
-	switch i {
-	case 1:
-		res = grpc_service.UserRole_ROLE_ADMIN
-	}
-
-	return res
-}

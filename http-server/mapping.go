@@ -5,6 +5,7 @@ import (
 	catalogs "github.com/mayerkv/go-catalogs/grpc-service"
 	notifications "github.com/mayerkv/go-notifications/grpc-service"
 	recruitments "github.com/mayerkv/go-recruitmens/grpc-service"
+	users "github.com/mayerkv/go-users/grpc-service"
 )
 
 func mapCandidateToDto(candidate *candidates.Candidate) CandidateDto {
@@ -197,7 +198,7 @@ func mapStageLineDto(line *recruitments.StageLine) StageLineDto {
 }
 
 func mapHistoryDto(history map[string]*recruitments.StageLineItem) map[string]StageLineItemDto {
-	var res map[string]StageLineItemDto
+	res := map[string]StageLineItemDto{}
 
 	for id, item := range history {
 		res[id] = mapStageLineItemDto(item)
@@ -289,4 +290,39 @@ func mapVacancyOrderDirection(direction int) recruitments.OrderDirection {
 
 func mapVacancyOrder(by int) recruitments.Vacancy_Order {
 	return recruitments.Vacancy_CREATED_AT
+}
+
+func mapCandidatesToDto(list []*candidates.Candidate) []CandidateDto {
+	var res []CandidateDto
+
+	for _, i := range list {
+		res = append(res, mapCandidateToDto(i))
+	}
+
+	return res
+}
+
+func mapOrderDirection(direction int) candidates.OrderDirection {
+	if direction == 1 {
+		return candidates.OrderDirection_DESC
+	}
+
+	return candidates.OrderDirection_ASC
+}
+
+func mapCandidateOrder(by int) candidates.Candidate_Order {
+	res := candidates.Candidate_FULL_NAME
+
+	return res
+}
+
+func intToUserRole(i int) users.UserRole {
+	var res users.UserRole
+
+	switch i {
+	case 1:
+		res = users.UserRole_ROLE_ADMIN
+	}
+
+	return res
 }
