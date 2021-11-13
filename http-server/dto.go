@@ -133,9 +133,9 @@ type RecruitmentDto struct {
 	CandidateId   string          `json:"candidateId"`
 	ResponsibleId string          `json:"responsibleId"`
 	CreatedAt     string          `json:"createdAt"`
-	StageLine     StageLineDto    `json:"stageLine"`
-	Vacancy       VacancyDto      `json:"vacancy"`
-	RefuseReason  RefuseReasonDto `json:"refuseReason"`
+	StageLine     *StageLineDto    `json:"stageLine"`
+	Vacancy       *VacancyDto      `json:"vacancy"`
+	RefuseReason  *RefuseReasonDto `json:"refuseReason"`
 }
 
 type StageLineDto struct {

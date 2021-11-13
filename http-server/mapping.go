@@ -1,6 +1,7 @@
 package http_server
 
 import (
+	"fmt"
 	candidates "github.com/mayerkv/go-candidates/grpc-service"
 	catalogs "github.com/mayerkv/go-catalogs/grpc-service"
 	notifications "github.com/mayerkv/go-notifications/grpc-service"
@@ -73,11 +74,16 @@ func mapCatalogDto(dto CreateCatalogDto) *catalogs.Catalog {
 }
 
 func mapCatalogItemsDto(items []CatalogItemDto) []*catalogs.CatalogItem {
-	res := make([]*catalogs.CatalogItem, 0)
+	fmt.Println(items)
+
+	res := make([]*catalogs.CatalogItem, 0, len(items))
 
 	for _, i := range items {
 		res = append(res, mapCatalogItemDto(i))
 	}
+
+
+	fmt.Println(res)
 
 	return res
 }
@@ -189,8 +195,12 @@ func mapRecruitment(recruitment *recruitments.Recruitment) RecruitmentDto {
 	}
 }
 
-func mapStageLineDto(line *recruitments.StageLine) StageLineDto {
-	return StageLineDto{
+func mapStageLineDto(line *recruitments.StageLine) *StageLineDto {
+	if line == nil {
+		return nil
+	}
+
+	return &StageLineDto{
 		StageId:  line.StageId,
 		Settings: mapSettingsDto(line.Settings),
 		History:  mapHistoryDto(line.History),
@@ -231,8 +241,12 @@ func mapSettingsDto(settings []*recruitments.StageLineSettings) []SettingDto {
 	return res
 }
 
-func mapVacancyDto(vacancy *recruitments.Vacancy) VacancyDto {
-	return VacancyDto{
+func mapVacancyDto(vacancy *recruitments.Vacancy) *VacancyDto {
+	if vacancy == nil {
+		return nil
+	}
+
+	return &VacancyDto{
 		Id:         vacancy.Id,
 		PositionId: vacancy.PositionId,
 		CustomerId: vacancy.CustomerId,
@@ -241,8 +255,12 @@ func mapVacancyDto(vacancy *recruitments.Vacancy) VacancyDto {
 	}
 }
 
-func mapRefuseReasonDto(reason *recruitments.RefuseReason) RefuseReasonDto {
-	return RefuseReasonDto{
+func mapRefuseReasonDto(reason *recruitments.RefuseReason) *RefuseReasonDto {
+	if reason == nil {
+		return nil
+	}
+
+	return &RefuseReasonDto{
 		ReasonId: reason.ReasonId,
 		Comment:  reason.Comment,
 	}
@@ -274,7 +292,7 @@ func mapVacancyDtoList(list []*recruitments.Vacancy) []VacancyDto {
 	res := make([]VacancyDto, 0, len(list))
 
 	for _, i := range list {
-		res = append(res, mapVacancyDto(i))
+		res = append(res, *mapVacancyDto(i))
 	}
 
 	return res

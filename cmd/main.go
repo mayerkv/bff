@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	grpc_clients "github.com/mayerkv/bff/grpc-clients"
-	http_server "github.com/mayerkv/bff/http-server"
+	"github.com/mayerkv/bff/grpc-clients"
+	"github.com/mayerkv/bff/http-server"
 	"log"
 	"net/http"
 	"time"

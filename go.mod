@@ -10,5 +10,6 @@ require (
 	github.com/mayerkv/go-notifications v1.0.0
 	github.com/mayerkv/go-recruitmens v1.0.1
 	github.com/mayerkv/go-users v1.0.0
+	github.com/prometheus/client_golang v1.11.0
 	google.golang.org/grpc v1.42.0
 )
