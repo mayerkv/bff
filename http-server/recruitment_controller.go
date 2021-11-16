@@ -3,6 +3,7 @@ package http_server
 import (
 	"context"
 	"github.com/gin-gonic/gin"
+	grpc_clients "github.com/mayerkv/bff/grpc-clients"
 	"github.com/mayerkv/go-recruitmens/grpc-service"
 	"net/http"
 	"time"
@@ -32,7 +33,7 @@ func (c *RecruitmentController) ConsiderCandidate(ctx *gin.Context) {
 		ResponsibleId: dto.ResponsibleId,
 		Settings:      mapSettings(dto.Settings),
 	}
-	response, err := c.client.ConsiderCandidate(reqCtx, req)
+	response, err := c.client.ConsiderCandidate(reqCtx, req, grpc_clients.Headers(ctx.Request))
 	if err != nil {
 		handleError(ctx, err)
 		return
@@ -60,7 +61,7 @@ func (c *RecruitmentController) ConsiderCandidateAnotherVacancy(ctx *gin.Context
 		Settings:      mapSettings(dto.Settings),
 	}
 
-	response, err := c.client.ConsiderCandidateAnotherVacancy(reqCtx, req)
+	response, err := c.client.ConsiderCandidateAnotherVacancy(reqCtx, req, grpc_clients.Headers(ctx.Request))
 	if err != nil {
 		handleError(ctx, err)
 		return
@@ -85,7 +86,7 @@ func (c *RecruitmentController) AcceptRecruitmentStage(ctx *gin.Context) {
 		RecruitmentId:    dto.RecruitmentId,
 		RequestedStageId: dto.RequestedStageId,
 	}
-	_, err := c.client.AcceptRecruitmentStage(reqCtx, req)
+	_, err := c.client.AcceptRecruitmentStage(reqCtx, req, grpc_clients.Headers(ctx.Request))
 	if err != nil {
 		handleError(ctx, err)
 		return
@@ -109,7 +110,7 @@ func (c *RecruitmentController) DenyRecruitment(ctx *gin.Context) {
 		RecruitmentId: dto.RecruitmentId,
 		Reason:        mapReason(dto.Reason),
 	}
-	_, err := c.client.DenyRecruitment(reqCtx, req)
+	_, err := c.client.DenyRecruitment(reqCtx, req, grpc_clients.Headers(ctx.Request))
 	if err != nil {
 		handleError(ctx, err)
 		return
@@ -132,7 +133,7 @@ func (c *RecruitmentController) GetRecruitment(ctx *gin.Context) {
 		RecruitmentId: dto.RecruitmentId,
 	}
 
-	response, err := c.client.GetRecruitment(reqCtx, req)
+	response, err := c.client.GetRecruitment(reqCtx, req, grpc_clients.Headers(ctx.Request))
 	if err != nil {
 		handleError(ctx, err)
 		return
@@ -159,7 +160,7 @@ func (c *RecruitmentController) ShowRecruitments(ctx *gin.Context) {
 		OrderDirection: mapRecruitmentOrderDirection(dto.OrderDirection),
 	}
 
-	response, err := c.client.ShowRecruitments(reqCtx, req)
+	response, err := c.client.ShowRecruitments(reqCtx, req, grpc_clients.Headers(ctx.Request))
 	if err != nil {
 		handleError(ctx, err)
 		return

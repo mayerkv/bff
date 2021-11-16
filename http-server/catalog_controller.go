@@ -3,6 +3,7 @@ package http_server
 import (
 	"context"
 	"github.com/gin-gonic/gin"
+	grpc_clients "github.com/mayerkv/bff/grpc-clients"
 	"github.com/mayerkv/go-catalogs/grpc-service"
 	"net/http"
 	"time"
@@ -28,7 +29,7 @@ func (c *CatalogController) CreateCatalog(ctx *gin.Context) {
 
 	req := &grpc_service.CreateCatalogRequest{Catalog: mapCatalogDto(dto)}
 
-	response, err := c.client.CreateCatalog(reqCtx, req)
+	response, err := c.client.CreateCatalog(reqCtx, req, grpc_clients.Headers(ctx.Request))
 	if err != nil {
 		handleError(ctx, err)
 		return
@@ -59,7 +60,7 @@ func (c *CatalogController) AddCatalogItem(ctx *gin.Context) {
 		},
 	}
 
-	_, err := c.client.AddCatalogItem(reqCtx, req)
+	_, err := c.client.AddCatalogItem(reqCtx, req, grpc_clients.Headers(ctx.Request))
 	if err != nil {
 		handleError(ctx, err)
 		return
@@ -82,7 +83,7 @@ func (c *CatalogController) GetCatalogItems(ctx *gin.Context) {
 		CatalogId: dto.CatalogId,
 	}
 
-	response, err := c.client.GetCatalogItems(reqCtx, req)
+	response, err := c.client.GetCatalogItems(reqCtx, req, grpc_clients.Headers(ctx.Request))
 	if err != nil {
 		handleError(ctx, err)
 		return

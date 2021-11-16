@@ -7,6 +7,8 @@ import (
 	recruitments "github.com/mayerkv/go-recruitmens/grpc-service"
 	users "github.com/mayerkv/go-users/grpc-service"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
+	"net/http"
 )
 
 func CreateUsersClient(addr string) (users.UsersServiceClient, *grpc.ClientConn, error) {
@@ -52,4 +54,18 @@ func CreateRecruitmentsClient(addr string) (recruitments.RecruitmentServiceClien
 	}
 
 	return recruitments.NewRecruitmentServiceClient(conn), conn, nil
+}
+
+func MetaDataFromHeaders(header http.Header) *metadata.MD {
+	md := metadata.MD{}
+
+	for name, values := range header {
+		md[name] = values
+	}
+
+	return &md
+}
+
+func Headers(r *http.Request) grpc.CallOption {
+	return grpc.Header(MetaDataFromHeaders(r.Header))
 }

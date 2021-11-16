@@ -3,6 +3,7 @@ package http_server
 import (
 	"context"
 	"github.com/gin-gonic/gin"
+	grpc_clients "github.com/mayerkv/bff/grpc-clients"
 	"github.com/mayerkv/go-notifications/grpc-service"
 	"net/http"
 	"time"
@@ -31,7 +32,7 @@ func (c *NotificationController) CreateTemplate(ctx *gin.Context) {
 		Template: dto.Template,
 	}
 
-	response, err := c.client.CreateTemplate(reqCtx, req)
+	response, err := c.client.CreateTemplate(reqCtx, req, grpc_clients.Headers(ctx.Request))
 	if err != nil {
 		handleError(ctx, err)
 		return
@@ -60,7 +61,7 @@ func (c *NotificationController) SearchTemplates(ctx *gin.Context) {
 		OrderDirection: mapTemplatesOrderDirection(dto.OrderDirection),
 	}
 
-	response, err := c.client.SearchTemplates(reqCtx, req)
+	response, err := c.client.SearchTemplates(reqCtx, req, grpc_clients.Headers(ctx.Request))
 	if err != nil {
 		handleError(ctx, err)
 		return
@@ -89,7 +90,7 @@ func (c *NotificationController) SearchNotifications(ctx *gin.Context) {
 		OrderDirection: mapNotificationsOrderDirection(dto.OrderDirection),
 	}
 
-	response, err := c.client.SearchNotifications(reqCtx, req)
+	response, err := c.client.SearchNotifications(reqCtx, req, grpc_clients.Headers(ctx.Request))
 	if err != nil {
 		handleError(ctx, err)
 		return

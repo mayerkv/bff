@@ -3,6 +3,7 @@ package http_server
 import (
 	"context"
 	"github.com/gin-gonic/gin"
+	grpc_clients "github.com/mayerkv/bff/grpc-clients"
 	"github.com/mayerkv/go-candidates/grpc-service"
 	"net/http"
 	"time"
@@ -31,7 +32,7 @@ func (c *CandidateController) CreateCandidate(ctx *gin.Context) {
 		Surname:  dto.Surname,
 		Contacts: mapDtoToContacts(dto.Contacts),
 	}
-	candidate, err := c.client.CreateCandidate(reqCtx, req)
+	candidate, err := c.client.CreateCandidate(reqCtx, req, grpc_clients.Headers(ctx.Request))
 	if err != nil {
 		handleError(ctx, err)
 		return
@@ -53,7 +54,7 @@ func (c *CandidateController) GetCandidate(ctx *gin.Context) {
 	defer cancel()
 
 	request := &grpc_service.GetCandidateRequest{Id: dto.Id}
-	response, err := c.client.GetCandidate(reqCtx, request)
+	response, err := c.client.GetCandidate(reqCtx, request, grpc_clients.Headers(ctx.Request))
 	if err != nil {
 		handleError(ctx, err)
 		return
@@ -79,7 +80,7 @@ func (c *CandidateController) SearchCandidates(ctx *gin.Context) {
 		OrderDirection: mapOrderDirection(dto.OrderDirection),
 	}
 
-	response, err := c.client.SearchCandidates(reqCtx, req)
+	response, err := c.client.SearchCandidates(reqCtx, req, grpc_clients.Headers(ctx.Request))
 	if err != nil {
 		handleError(ctx, err)
 		return
