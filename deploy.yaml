@@ -54,18 +54,3 @@ spec:
       targetPort: 8080
       name: http
 ---
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
-metadata:
-  name: bff-servicemonitor
-  namespace: monitoring
-  labels:
-    app: bff
-    release: prometheus
-spec:
-  selector:
-    matchLabels:
-      app: bff
-  endpoints:
-    - port: http
-      interval: 15s
