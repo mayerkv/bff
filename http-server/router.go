@@ -28,9 +28,10 @@ func CreateRouter(
 
 	prometheus.MustRegister(requestCount, responseTimeHistogram)
 
-	r := gin.Default()
+	r := gin.New()
+	r.Use(gin.Recovery())
 
-	vacanciesGroup := r.Group("/vacancies")
+	vacanciesGroup := r.Group("/vacancies", gin.Logger())
 	{
 		vacanciesGroup.POST("", metricsMiddleware("vacancies", "PostVacancy", responseTimeHistogram, requestCount), vacancyController.PostVacancy)
 		vacanciesGroup.GET("", metricsMiddleware("vacancies", "ShowVacancies", responseTimeHistogram, requestCount), vacancyController.ShowVacancies)
@@ -43,7 +44,7 @@ func CreateRouter(
 		vacanciesGroup.GET("/:id", metricsMiddleware("vacancies", "GetVacancy", responseTimeHistogram, requestCount), vacancyController.GetVacancy)
 	}
 
-	recruitmentGroup := r.Group("/recruitment")
+	recruitmentGroup := r.Group("/recruitment", gin.Logger())
 	{
 		recruitmentGroup.POST("", metricsMiddleware("recruitment", "ConsiderCandidate", responseTimeHistogram, requestCount), recruitmentController.ConsiderCandidate)
 		recruitmentGroup.GET("/:id", metricsMiddleware("recruitment", "GetRecruitment", responseTimeHistogram, requestCount), recruitmentController.GetRecruitment)
@@ -53,26 +54,26 @@ func CreateRouter(
 		recruitmentGroup.POST("/:id/status/deny", metricsMiddleware("recruitment", "DenyRecruitment", responseTimeHistogram, requestCount), recruitmentController.DenyRecruitment)
 	}
 
-	usersGroup := r.Group("/users")
+	usersGroup := r.Group("/users", gin.Logger())
 	{
 		usersGroup.POST("", metricsMiddleware("users", "CreateUser", responseTimeHistogram, requestCount), userController.CreateUser)
 	}
 
-	candidatesGroup := r.Group("/candidates")
+	candidatesGroup := r.Group("/candidates", gin.Logger())
 	{
 		candidatesGroup.POST("", metricsMiddleware("candidates", "CreateCandidate", responseTimeHistogram, requestCount), candidateController.CreateCandidate)
 		candidatesGroup.GET("/:id", metricsMiddleware("candidates", "GetCandidate", responseTimeHistogram, requestCount), candidateController.GetCandidate)
 		candidatesGroup.GET("", metricsMiddleware("candidates", "SearchCandidates", responseTimeHistogram, requestCount), candidateController.SearchCandidates)
 	}
 
-	catalogsGroup := r.Group("/catalogs")
+	catalogsGroup := r.Group("/catalogs", gin.Logger())
 	{
 		catalogsGroup.POST("", metricsMiddleware("catalogs", "CreateCatalog", responseTimeHistogram, requestCount), catalogController.CreateCatalog)
 		catalogsGroup.POST("/:id/items", metricsMiddleware("catalogs", "AddCatalogItem", responseTimeHistogram, requestCount), catalogController.AddCatalogItem)
 		catalogsGroup.GET("/:id/items", metricsMiddleware("catalogs", "GetCatalogItems", responseTimeHistogram, requestCount), catalogController.GetCatalogItems)
 	}
 
-	notificationsGroup := r.Group("/notifications")
+	notificationsGroup := r.Group("/notifications", gin.Logger())
 	{
 		notificationsGroup.POST("/templates", metricsMiddleware("notifications", "CreateTemplate", responseTimeHistogram, requestCount), notificationController.CreateTemplate)
 		notificationsGroup.GET("/templates", metricsMiddleware("notifications", "SearchTemplates", responseTimeHistogram, requestCount), notificationController.SearchTemplates)

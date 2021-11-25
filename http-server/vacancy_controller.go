@@ -1,7 +1,6 @@
 package http_server
 
 import (
-	"context"
 	"github.com/gin-gonic/gin"
 	"github.com/mayerkv/bff/grpc-clients"
 	"github.com/mayerkv/go-recruitmens/grpc-service"
@@ -24,7 +23,7 @@ func (c *VacancyController) PostVacancy(ctx *gin.Context) {
 		return
 	}
 
-	reqCtx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	reqCtx, cancel := grpc_clients.ContextWithCancel(ctx.Request.Header, 3*time.Second)
 	defer cancel()
 
 	req := &grpc_service.PostVacancyRequest{
@@ -32,7 +31,7 @@ func (c *VacancyController) PostVacancy(ctx *gin.Context) {
 		CustomerId: dto.CustomerId,
 	}
 
-	response, err := c.client.PostVacancy(reqCtx, req, grpc_clients.Headers(ctx.Request))
+	response, err := c.client.PostVacancy(reqCtx, req)
 	if err != nil {
 		handleError(ctx, err)
 		return
@@ -50,7 +49,7 @@ func (c *VacancyController) ShowVacancies(ctx *gin.Context) {
 		return
 	}
 
-	reqCtx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	reqCtx, cancel := grpc_clients.ContextWithCancel(ctx.Request.Header, 3*time.Second)
 	defer cancel()
 
 	req := &grpc_service.ShowVacanciesRequest{
@@ -61,7 +60,7 @@ func (c *VacancyController) ShowVacancies(ctx *gin.Context) {
 		OrderDirection: mapVacancyOrderDirection(dto.OrderDirection),
 	}
 
-	response, err := c.client.ShowVacancies(reqCtx, req, grpc_clients.Headers(ctx.Request))
+	response, err := c.client.ShowVacancies(reqCtx, req)
 	if err != nil {
 		handleError(ctx, err)
 		return
@@ -80,7 +79,7 @@ func (c *VacancyController) SearchVacancies(ctx *gin.Context) {
 		return
 	}
 
-	reqCtx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	reqCtx, cancel := grpc_clients.ContextWithCancel(ctx.Request.Header, 3*time.Second)
 	defer cancel()
 
 	req := &grpc_service.SearchVacanciesRequest{
@@ -90,7 +89,7 @@ func (c *VacancyController) SearchVacancies(ctx *gin.Context) {
 		OrderDirection: mapVacancyOrderDirection(dto.OrderDirection),
 	}
 
-	response, err := c.client.SearchVacancies(reqCtx, req, grpc_clients.Headers(ctx.Request))
+	response, err := c.client.SearchVacancies(reqCtx, req)
 	if err != nil {
 		handleError(ctx, err)
 		return
@@ -110,7 +109,7 @@ func (c *VacancyController) ChangeVacancyPosition(ctx *gin.Context) {
 		return
 	}
 
-	reqCtx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	reqCtx, cancel := grpc_clients.ContextWithCancel(ctx.Request.Header, 3*time.Second)
 	defer cancel()
 
 	req := &grpc_service.ChangeVacancyPositionRequest{
@@ -118,7 +117,7 @@ func (c *VacancyController) ChangeVacancyPosition(ctx *gin.Context) {
 		PositionId: dto.PositionId,
 	}
 
-	_, err := c.client.ChangeVacancyPosition(reqCtx, req, grpc_clients.Headers(ctx.Request))
+	_, err := c.client.ChangeVacancyPosition(reqCtx, req)
 	if err != nil {
 		handleError(ctx, err)
 		return
@@ -134,14 +133,14 @@ func (c *VacancyController) ApproveVacancy(ctx *gin.Context) {
 		return
 	}
 
-	reqCtx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	reqCtx, cancel := grpc_clients.ContextWithCancel(ctx.Request.Header, 3*time.Second)
 	defer cancel()
 
 	req := &grpc_service.ApproveVacancyRequest{
 		VacancyId: dto.VacancyId,
 	}
 
-	_, err := c.client.ApproveVacancy(reqCtx, req, grpc_clients.Headers(ctx.Request))
+	_, err := c.client.ApproveVacancy(reqCtx, req)
 	if err != nil {
 		handleError(ctx, err)
 		return
@@ -157,14 +156,14 @@ func (c *VacancyController) CloseVacancy(ctx *gin.Context) {
 		return
 	}
 
-	reqCtx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	reqCtx, cancel := grpc_clients.ContextWithCancel(ctx.Request.Header, 3*time.Second)
 	defer cancel()
 
 	req := &grpc_service.CloseVacancyRequest{
 		VacancyId: dto.VacancyId,
 	}
 
-	_, err := c.client.CloseVacancy(reqCtx, req, grpc_clients.Headers(ctx.Request))
+	_, err := c.client.CloseVacancy(reqCtx, req)
 	if err != nil {
 		handleError(ctx, err)
 		return
@@ -180,14 +179,14 @@ func (c *VacancyController) RejectVacancy(ctx *gin.Context) {
 		return
 	}
 
-	reqCtx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	reqCtx, cancel := grpc_clients.ContextWithCancel(ctx.Request.Header, 3*time.Second)
 	defer cancel()
 
 	req := &grpc_service.RejectVacancyRequest{
 		VacancyId: dto.VacancyId,
 	}
 
-	_, err := c.client.RejectVacancy(reqCtx, req, grpc_clients.Headers(ctx.Request))
+	_, err := c.client.RejectVacancy(reqCtx, req)
 	if err != nil {
 		handleError(ctx, err)
 		return
@@ -203,14 +202,14 @@ func (c *VacancyController) TakeInWorkVacancy(ctx *gin.Context) {
 		return
 	}
 
-	reqCtx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	reqCtx, cancel := grpc_clients.ContextWithCancel(ctx.Request.Header, 3*time.Second)
 	defer cancel()
 
 	req := &grpc_service.TakeInWorkVacancyRequest{
 		VacancyId: dto.VacancyId,
 	}
 
-	_, err := c.client.TakeInWorkVacancy(reqCtx, req, grpc_clients.Headers(ctx.Request))
+	_, err := c.client.TakeInWorkVacancy(reqCtx, req)
 	if err != nil {
 		handleError(ctx, err)
 		return
@@ -226,14 +225,14 @@ func (c *VacancyController) GetVacancy(ctx *gin.Context) {
 		return
 	}
 
-	reqCtx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	reqCtx, cancel := grpc_clients.ContextWithCancel(ctx.Request.Header, 3*time.Second)
 	defer cancel()
 
 	req := &grpc_service.GetVacancyRequest{
 		VacancyId: dto.VacancyId,
 	}
 
-	response, err := c.client.GetVacancy(reqCtx, req, grpc_clients.Headers(ctx.Request))
+	response, err := c.client.GetVacancy(reqCtx, req)
 	if err != nil {
 		handleError(ctx, err)
 		return

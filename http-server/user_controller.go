@@ -1,7 +1,6 @@
 package http_server
 
 import (
-	"context"
 	"github.com/gin-gonic/gin"
 	grpc_clients "github.com/mayerkv/bff/grpc-clients"
 	"github.com/mayerkv/go-users/grpc-service"
@@ -30,10 +29,10 @@ func (c *UserController) CreateUser(ctx *gin.Context) {
 		Role:     intToUserRole(dto.Role),
 	}
 
-	reqCtx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	reqCtx, cancel := grpc_clients.ContextWithCancel(ctx.Request.Header, 3*time.Second)
 	defer cancel()
 
-	_, err := c.client.CreateUser(reqCtx, req, grpc_clients.Headers(ctx.Request))
+	_, err := c.client.CreateUser(reqCtx, req)
 	if err != nil {
 		handleError(ctx, err)
 		return

@@ -1,7 +1,6 @@
 package http_server
 
 import (
-	"context"
 	"github.com/gin-gonic/gin"
 	grpc_clients "github.com/mayerkv/bff/grpc-clients"
 	"github.com/mayerkv/go-notifications/grpc-service"
@@ -24,7 +23,7 @@ func (c *NotificationController) CreateTemplate(ctx *gin.Context) {
 		return
 	}
 
-	reqCtx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	reqCtx, cancel := grpc_clients.ContextWithCancel(ctx.Request.Header, 3*time.Second)
 	defer cancel()
 
 	req := &grpc_service.CreateTemplateRequest{
@@ -32,7 +31,7 @@ func (c *NotificationController) CreateTemplate(ctx *gin.Context) {
 		Template: dto.Template,
 	}
 
-	response, err := c.client.CreateTemplate(reqCtx, req, grpc_clients.Headers(ctx.Request))
+	response, err := c.client.CreateTemplate(reqCtx, req)
 	if err != nil {
 		handleError(ctx, err)
 		return
@@ -50,7 +49,7 @@ func (c *NotificationController) SearchTemplates(ctx *gin.Context) {
 		return
 	}
 
-	reqCtx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	reqCtx, cancel := grpc_clients.ContextWithCancel(ctx.Request.Header, 3*time.Second)
 	defer cancel()
 
 	req := &grpc_service.SearchTemplatesRequest{
@@ -61,7 +60,7 @@ func (c *NotificationController) SearchTemplates(ctx *gin.Context) {
 		OrderDirection: mapTemplatesOrderDirection(dto.OrderDirection),
 	}
 
-	response, err := c.client.SearchTemplates(reqCtx, req, grpc_clients.Headers(ctx.Request))
+	response, err := c.client.SearchTemplates(reqCtx, req)
 	if err != nil {
 		handleError(ctx, err)
 		return
@@ -80,7 +79,7 @@ func (c *NotificationController) SearchNotifications(ctx *gin.Context) {
 		return
 	}
 
-	reqCtx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	reqCtx, cancel := grpc_clients.ContextWithCancel(ctx.Request.Header, 3*time.Second)
 	defer cancel()
 
 	req := &grpc_service.SearchNotificationsRequest{
@@ -90,7 +89,7 @@ func (c *NotificationController) SearchNotifications(ctx *gin.Context) {
 		OrderDirection: mapNotificationsOrderDirection(dto.OrderDirection),
 	}
 
-	response, err := c.client.SearchNotifications(reqCtx, req, grpc_clients.Headers(ctx.Request))
+	response, err := c.client.SearchNotifications(reqCtx, req)
 	if err != nil {
 		handleError(ctx, err)
 		return

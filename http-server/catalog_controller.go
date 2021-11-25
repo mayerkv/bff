@@ -1,7 +1,6 @@
 package http_server
 
 import (
-	"context"
 	"github.com/gin-gonic/gin"
 	grpc_clients "github.com/mayerkv/bff/grpc-clients"
 	"github.com/mayerkv/go-catalogs/grpc-service"
@@ -24,12 +23,12 @@ func (c *CatalogController) CreateCatalog(ctx *gin.Context) {
 		return
 	}
 
-	reqCtx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	reqCtx, cancel := grpc_clients.ContextWithCancel(ctx.Request.Header, 3*time.Second)
 	defer cancel()
 
 	req := &grpc_service.CreateCatalogRequest{Catalog: mapCatalogDto(dto)}
 
-	response, err := c.client.CreateCatalog(reqCtx, req, grpc_clients.Headers(ctx.Request))
+	response, err := c.client.CreateCatalog(reqCtx, req)
 	if err != nil {
 		handleError(ctx, err)
 		return
@@ -49,7 +48,7 @@ func (c *CatalogController) AddCatalogItem(ctx *gin.Context) {
 		return
 	}
 
-	reqCtx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	reqCtx, cancel := grpc_clients.ContextWithCancel(ctx.Request.Header, 3*time.Second)
 	defer cancel()
 
 	req := &grpc_service.AddCatalogItemRequest{
@@ -60,7 +59,7 @@ func (c *CatalogController) AddCatalogItem(ctx *gin.Context) {
 		},
 	}
 
-	_, err := c.client.AddCatalogItem(reqCtx, req, grpc_clients.Headers(ctx.Request))
+	_, err := c.client.AddCatalogItem(reqCtx, req)
 	if err != nil {
 		handleError(ctx, err)
 		return
@@ -76,14 +75,14 @@ func (c *CatalogController) GetCatalogItems(ctx *gin.Context) {
 		return
 	}
 
-	reqCtx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	reqCtx, cancel := grpc_clients.ContextWithCancel(ctx.Request.Header, 3*time.Second)
 	defer cancel()
 
 	req := &grpc_service.GetCatalogItemsRequest{
 		CatalogId: dto.CatalogId,
 	}
 
-	response, err := c.client.GetCatalogItems(reqCtx, req, grpc_clients.Headers(ctx.Request))
+	response, err := c.client.GetCatalogItems(reqCtx, req)
 	if err != nil {
 		handleError(ctx, err)
 		return

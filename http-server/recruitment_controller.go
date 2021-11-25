@@ -1,7 +1,6 @@
 package http_server
 
 import (
-	"context"
 	"github.com/gin-gonic/gin"
 	grpc_clients "github.com/mayerkv/bff/grpc-clients"
 	"github.com/mayerkv/go-recruitmens/grpc-service"
@@ -24,7 +23,7 @@ func (c *RecruitmentController) ConsiderCandidate(ctx *gin.Context) {
 		return
 	}
 
-	reqCtx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	reqCtx, cancel := grpc_clients.ContextWithCancel(ctx.Request.Header, 3*time.Second)
 	defer cancel()
 
 	req := &grpc_service.ConsiderCandidateRequest{
@@ -33,7 +32,7 @@ func (c *RecruitmentController) ConsiderCandidate(ctx *gin.Context) {
 		ResponsibleId: dto.ResponsibleId,
 		Settings:      mapSettings(dto.Settings),
 	}
-	response, err := c.client.ConsiderCandidate(reqCtx, req, grpc_clients.Headers(ctx.Request))
+	response, err := c.client.ConsiderCandidate(reqCtx, req)
 	if err != nil {
 		handleError(ctx, err)
 		return
@@ -52,7 +51,7 @@ func (c *RecruitmentController) ConsiderCandidateAnotherVacancy(ctx *gin.Context
 		return
 	}
 
-	reqCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	reqCtx, cancel := grpc_clients.ContextWithCancel(ctx.Request.Header, 3*time.Second)
 	defer cancel()
 
 	req := &grpc_service.ConsiderCandidateAnotherVacancyRequest{
@@ -61,7 +60,7 @@ func (c *RecruitmentController) ConsiderCandidateAnotherVacancy(ctx *gin.Context
 		Settings:      mapSettings(dto.Settings),
 	}
 
-	response, err := c.client.ConsiderCandidateAnotherVacancy(reqCtx, req, grpc_clients.Headers(ctx.Request))
+	response, err := c.client.ConsiderCandidateAnotherVacancy(reqCtx, req)
 	if err != nil {
 		handleError(ctx, err)
 		return
@@ -79,14 +78,14 @@ func (c *RecruitmentController) AcceptRecruitmentStage(ctx *gin.Context) {
 		return
 	}
 
-	reqCtx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	reqCtx, cancel := grpc_clients.ContextWithCancel(ctx.Request.Header, 3*time.Second)
 	defer cancel()
 
 	req := &grpc_service.AcceptRecruitmentStageRequest{
 		RecruitmentId:    dto.RecruitmentId,
 		RequestedStageId: dto.RequestedStageId,
 	}
-	_, err := c.client.AcceptRecruitmentStage(reqCtx, req, grpc_clients.Headers(ctx.Request))
+	_, err := c.client.AcceptRecruitmentStage(reqCtx, req)
 	if err != nil {
 		handleError(ctx, err)
 		return
@@ -103,14 +102,14 @@ func (c *RecruitmentController) DenyRecruitment(ctx *gin.Context) {
 		return
 	}
 
-	reqCtx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	reqCtx, cancel := grpc_clients.ContextWithCancel(ctx.Request.Header, 3*time.Second)
 	defer cancel()
 
 	req := &grpc_service.DenyRecruitmentRequest{
 		RecruitmentId: dto.RecruitmentId,
 		Reason:        mapReason(dto.Reason),
 	}
-	_, err := c.client.DenyRecruitment(reqCtx, req, grpc_clients.Headers(ctx.Request))
+	_, err := c.client.DenyRecruitment(reqCtx, req)
 	if err != nil {
 		handleError(ctx, err)
 		return
@@ -126,14 +125,14 @@ func (c *RecruitmentController) GetRecruitment(ctx *gin.Context) {
 		return
 	}
 
-	reqCtx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	reqCtx, cancel := grpc_clients.ContextWithCancel(ctx.Request.Header, 3*time.Second)
 	defer cancel()
 
 	req := &grpc_service.GetRecruitmentRequest{
 		RecruitmentId: dto.RecruitmentId,
 	}
 
-	response, err := c.client.GetRecruitment(reqCtx, req, grpc_clients.Headers(ctx.Request))
+	response, err := c.client.GetRecruitment(reqCtx, req)
 	if err != nil {
 		handleError(ctx, err)
 		return
@@ -149,7 +148,7 @@ func (c *RecruitmentController) ShowRecruitments(ctx *gin.Context) {
 		return
 	}
 
-	reqCtx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	reqCtx, cancel := grpc_clients.ContextWithCancel(ctx.Request.Header, 3*time.Second)
 	defer cancel()
 
 	req := &grpc_service.ShowRecruitmentRequest{
@@ -160,7 +159,7 @@ func (c *RecruitmentController) ShowRecruitments(ctx *gin.Context) {
 		OrderDirection: mapRecruitmentOrderDirection(dto.OrderDirection),
 	}
 
-	response, err := c.client.ShowRecruitments(reqCtx, req, grpc_clients.Headers(ctx.Request))
+	response, err := c.client.ShowRecruitments(reqCtx, req)
 	if err != nil {
 		handleError(ctx, err)
 		return
